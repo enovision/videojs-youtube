@@ -463,10 +463,12 @@
   };
 
   videojs.Youtube.prototype.setVolume = function(percentAsDecimal) {
-    if(typeof(percentAsDecimal) !== 'undefined' && percentAsDecimal !== this.volumeVal) {
-      this.ytplayer.setVolume(percentAsDecimal * 100.0);
-      this.volumeVal = percentAsDecimal;
-      this.player_.trigger('volumechange');
+    if (ytplayer) {
+      if(typeof(percentAsDecimal) !== 'undefined' && percentAsDecimal !== this.volumeVal) {
+        this.ytplayer.setVolume(percentAsDecimal * 100.0);
+        this.volumeVal = percentAsDecimal;
+        this.player_.trigger('volumechange');
+      }
     }
   };
 
@@ -474,18 +476,20 @@
     return this.mutedVal;
   };
   videojs.Youtube.prototype.setMuted = function(muted) {
-    if(muted) {
-      this.storedVolume = this.volumeVal;
-      this.ytplayer.mute();
-      this.player_.volume(0);
-    } else {
-      this.ytplayer.unMute();
-      this.player_.volume(this.storedVolume);
+    if (ytplayer) {
+      if(muted) {
+        this.storedVolume = this.volumeVal;
+        this.ytplayer.mute();
+        this.player_.volume(0);
+      } else {
+        this.ytplayer.unMute();
+        this.player_.volume(this.storedVolume);
+      }
+
+      this.mutedVal = muted;
+
+      this.player_.trigger('volumechange');
     }
-
-    this.mutedVal = muted;
-
-    this.player_.trigger('volumechange');
   };
 
   videojs.Youtube.prototype.buffered = function() {
