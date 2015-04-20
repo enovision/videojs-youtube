@@ -476,7 +476,7 @@
     return this.mutedVal;
   };
   videojs.Youtube.prototype.setMuted = function(muted) {
-    if (ytplayer) {
+    if (this.ytplayer) {
       if(muted) {
         this.storedVolume = this.volumeVal;
         this.ytplayer.mute();
